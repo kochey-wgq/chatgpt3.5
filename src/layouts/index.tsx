@@ -36,7 +36,7 @@ const Layouts: React.FC = (): JSX.Element => {
    const asideText = (e:React.MouseEvent<HTMLElement>) =>{ 
       messageBtnRef.current?.sendAsideText(  (e.target as HTMLElement).innerHTML  )
    }
-   const initChatCom = (): JSX.Element => {
+   const initChatCom = (): JSX.Element => { 
       return (
          <>
             <h1 style={{ display: visibilityDom(collMsgToggle) }}>{tips}</h1>
