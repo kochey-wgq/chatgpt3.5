@@ -1,0 +1,51 @@
+.messageWrap {
+   background-color: #F4F4F4;
+   border-radius: 1.625rem;
+   padding: 6px 10px;
+   min-height: 52px;
+   box-sizing: border-box;
+   outline: none;
+   display: flex;
+   justify-content: space-between;
+   align-items: end;
+   margin: 0 12px;
+   margin-top: 3%;
+   .left {
+      flex: 1;
+      min-height: 2.5rem; 
+      margin-left: 1rem; 
+
+      .field { 
+         :global(.MuiInputBase-root) {
+            padding: 0 !important;
+            min-height: 1.5rem;
+            fieldset{
+               outline: none !important;
+               border: none !important;
+               height: 1.5rem;
+            } 
+         } 
+         min-height: 1.5rem;
+         width: 100%; 
+         margin: .5rem 0;  
+      }
+   }
+
+   .right {
+      width: 2rem;
+      line-height: 3.25rem;
+      height: 2rem;
+      background-color: #D7D7D7;
+      border-radius: 50%;
+      margin-right: 4px;
+      margin-bottom: .25rem;
+      margin-left: 10px;
+   }
+} 
+
+// .sticky{ 
+//    position: absolute;
+//    bottom: 3%;
+//    left: 0;
+//    right: 0;
+// }
