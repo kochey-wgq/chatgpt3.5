@@ -1,95 +1,124 @@
-import React,{useState,forwardRef,KeyboardEvent,useEffect,useImperativeHandle,useRef} from 'react'
+import React, { useState, forwardRef, KeyboardEvent, useEffect, useImperativeHandle } from 'react'
 import style from './index.module.less'
-import TextField from '@mui/material/TextField'; 
-import type {InitialState} from '../../store/state'; 
+import TextField from '@mui/material/TextField';
+import type { InitialState } from '../../store/state';
 import { addUserMsg } from '../../store/actions';
-import {useSelector,useDispatch} from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import Snackbar  from '@mui/material/Snackbar';
+import Slide, { SlideProps } from '@mui/material/Slide';
+import { TransitionProps } from '@mui/material/transitions';
+import Fade from '@mui/material/Fade';
+import SendIcon from '@mui/icons-material/Send';
+interface SnackbarTs{
+   open: boolean,
+   Transition: React.ComponentType<
+      TransitionProps & {
+        children: React.ReactElement<any, any>;
+      }
+   >;
+}
 type ForwardProps = {
-   onFieldVal : (value: string) => void
-   onCollMsgToggle : (collMsgToggle: boolean) => void
+   onFieldVal: (value: string) => void
+   onCollMsgToggle: (collMsgToggle: boolean) => void
 }
 export type ForwardRef = {
-   sendAsideText : (content: string) => void
+   sendAsideText: (content: string) => void
 }
-const MessageBtn = forwardRef<ForwardRef,ForwardProps>(({onFieldVal,onCollMsgToggle},ref) => {  
-   const dispatch = useDispatch() 
+const MessageBtn = forwardRef<ForwardRef, ForwardProps>(({ onFieldVal, onCollMsgToggle }, ref) => {
+   const dispatch = useDispatch()
+   // 消息框配置
+   const [snackbar, setSnackbar] = useState<SnackbarTs>({
+      open: false,
+      Transition: Fade,
+   });
+   const { Transition, open :snackbarOpen } = snackbar;
+   // 消息提示 
+
+
+   function transition(props: SlideProps ) {
+      return  <Slide {...props} direction="up" />;
+   }
+   const handleSnackbar = (newState:SnackbarTs) => { 
+      setSnackbar(newState)
+   };
+   
    // 消息列表有数据转换布局模式
-   const [collMsgToggle,setCollMsgToggle] = useState<boolean>(false)
+   const [collMsgToggle, setCollMsgToggle] = useState<boolean>(false)
 
    // filed content
-   const [fieldVal,setFiledVal] = useState<string>('')
+   const [fieldVal, setFiledVal] = useState<string>('')
 
    // getCollectionMsg
    const collectionMsglist = useSelector<InitialState, InitialState['massageCollection']>((state) => state.massageCollection)
-  
+
    // 判断访问的设备
-   const isMobile = () :string[] | null => {
+   const isMobile = (): string[] | null => {
       const userAgent = navigator.userAgent;
       return userAgent.match(/(iPhone|iPod|Android|ios|iPad|AppleWebKit.*Mobile.*)/i);
    }
    // 暴露方法
-   useImperativeHandle(ref,() => ({
-      sendAsideText(content : string){   
-         // if(!fieldVal) return
-         // // 分发
-         // dispatch(addUserMsg({
-         //    type : 'me',
-         //    msgData : `${fieldVal}=> ${content}`
-         // })) 
-         sendBtn(content) 
+   useImperativeHandle(ref, () => ({
+      sendAsideText(content: string) {
+         sendBtn(content)
       }
    }))
    useEffect(() => {
       setCollMsgToggle(!!collectionMsglist.length)
       collectionMsglist.length && onCollMsgToggle(!!collectionMsglist.length);   //使用状态提升让父组件接收filed内容
       // 当 collectionMsglist 有数据以后
-      console.log(collectionMsglist,collMsgToggle, 'useSelector');
-   }, [collectionMsglist]);  
+      console.log(collectionMsglist, collMsgToggle, 'useSelector');
+   }, [collectionMsglist]);
 
- 
+
 
    // filed send btn 
-   const sendBtn = (asideContent?: string) :void => {
-      console.log(fieldVal,'fieldVal')
-      if(!fieldVal) return
+   const sendBtn = (asideContent?: string): void => {
+      console.log(fieldVal, 'fieldVal')
+      if (!fieldVal) { 
+         handleSnackbar({
+            open: true, 
+            Transition : transition
+         })
+         return
+      } 
       onFieldVal(fieldVal);   //使用状态提升让父组件接收filed内容
       // 分发
       dispatch(addUserMsg({
-         type : 'me',
-         msgData : asideContent ? `${fieldVal} => ${asideContent}` : fieldVal
-      }))  
+         type: 'me',
+         msgData: asideContent ? `${fieldVal} => ${asideContent}` : fieldVal
+      }))
       setFiledVal('')
    }
    // filed key事件
-   const msgKeyDown = (event : KeyboardEvent<HTMLElement>) :void =>{
-      
+   const msgKeyDown = (event: KeyboardEvent<HTMLElement>): void => {
+
       console.log('Key Up:', event.key);
-      if(isMobile()){ //则不阻止任何事件
+      if (isMobile()) { //则不阻止任何事件
 
          return
       }
-      if(event.key === 'Enter' && !event.shiftKey){
+      if (event.key === 'Enter' && !event.shiftKey) {
          event.preventDefault()
          sendBtn()
-      } 
+      }
    }
 
 
    // filed 内容变化
-   const textFieldChange =  (event:React.ChangeEvent<HTMLInputElement>) :void  =>{
+   const textFieldChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
       const newValue = event.target.value;
       setFiledVal(newValue)
-      
-   } 
+
+   }
 
    return (
       <>
-         <div className={style.messageWrap}> 
-            <div className={style.left}> 
+         <div className={style.messageWrap}>
+            <div className={style.left}>
                <TextField
                   className={style.field}
-                  id="outlined-multiline-flexible" 
-                  multiline 
+                  id="outlined-multiline-flexible"
+                  multiline
                   maxRows="6"
                   InputProps={{
                      style: { fontSize: '1.0625rem' }
@@ -97,11 +126,26 @@ const MessageBtn = forwardRef<ForwardRef,ForwardProps>(({onFieldVal,onCollMsgTog
                   value={fieldVal}
                   onKeyDown={msgKeyDown}
                   onChange={textFieldChange}
-                  placeholder="给“ChatGPT”发送消息" 
+                  placeholder="给“ChatGPT”发送消息"
                />
             </div>
-            <div className={style.right} onClick={() => sendBtn}></div>
-         </div>   
+            <div className={style.right} onClick={() => sendBtn()}>
+               <SendIcon style={{ color: 'white', fontSize: '18px' }}/>
+            </div>
+         </div>
+         <Snackbar
+            open={snackbarOpen}
+            onClose={() => {
+               handleSnackbar({
+                  ...snackbar,
+                  open: false,
+               })}
+            }
+            TransitionComponent={Transition}
+            message='消息不能为空'
+            key={Transition.name}
+            autoHideDuration={1000}
+         />
       </>
    )
 })

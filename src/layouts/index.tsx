@@ -29,7 +29,8 @@ const Layouts: React.FC = (): JSX.Element => {
          response : {content : '有什么可以帮忙的？'},
          callback(str:string){ 
             setTips(prev => prev += str)
-         } 
+         } ,
+         time : 250
       })
    },[])
    // 辅助信息事件
