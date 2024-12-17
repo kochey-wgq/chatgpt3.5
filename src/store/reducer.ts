@@ -8,19 +8,26 @@ const reducer = (state: InitialState = initialState, { type, data }: any) => {
             ...state,
             massageCollection: [
                ...state.massageCollection,
-               data
+               data,
+               {
+                  type : 'gpt-loading' 
+               }
             ]
          }
       case 'ADD_GPT_MSG':
          let massageCollection : InitialState['massageCollection'] = []
+         
          massageCollection = [
-            ...state.massageCollection 
+            ...state.massageCollection,
          ]
-         if(state.massageCollection[state.massageCollection.length - 1]?.type !== 'gpt'){
-            massageCollection = massageCollection.concat(data)
-         }else{ 
-            state.massageCollection[state.massageCollection.length - 1].msgData += data.msgData
+         if(state.massageCollection[state.massageCollection.length - 1].type === 'gpt-loading'){
+            massageCollection.pop()
+            massageCollection = massageCollection.concat({
+               type : 'gpt',
+               msgData : '' 
+            })
          }
+         state.massageCollection[state.massageCollection.length - 1].msgData += data.msgData
          return {
             ...state,
             massageCollection

@@ -28,14 +28,14 @@ class ChatGpt {
          stream: true,
          messages: content.map(t =>{
             return {
-               role : t.type === 'me' ? 'user' : 'assistant',
-               content : t.msgData
+               role : t.type === 'me' || t.type === 'gpt-loading' ? 'user' : 'assistant',
+               content : t.msgData || ''
             }
-         })
+         }).filter(t => t.role !== 'gpt-loading')
          
       }) 
       for await (const chunk of res) {
-         console.log(chunk.choices,'chunk.choices')
+         console.log(chunk,'chunk.choices')
          // 处理每个数据块
          onMessageReceived(chunk.choices[0].delta)
       }   

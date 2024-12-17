@@ -1,5 +1,9 @@
+export interface MassageObj {
+   type : string,
+   msgData : string
+}
 export interface InitialState {
-   massageCollection : any[]
+   massageCollection : MassageObj[]
 }
 
 
