@@ -1,6 +1,7 @@
 import OpenAI from "openai"
+import type { InitialState } from '../store/state';
 interface ResponseMsg {
-   content :string ,
+   content : InitialState['massageCollection'] ,
    onMessageReceived : (delta : {[propsName : string]: string}) => void 
 }
 class ChatGpt {
@@ -25,14 +26,16 @@ class ChatGpt {
       const res = await openAi.chat.completions.create({
          model: "openai/gpt-3.5-turbo",
          stream: true,
-         messages: [
-            {
-               "role": "user",
-               "content": content
+         messages: content.map(t =>{
+            return {
+               role : t.type === 'me' ? 'user' : 'assistant',
+               content : t.msgData
             }
-         ]
+         })
+         
       }) 
       for await (const chunk of res) {
+         console.log(chunk.choices,'chunk.choices')
          // 处理每个数据块
          onMessageReceived(chunk.choices[0].delta)
       }   

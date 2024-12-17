@@ -18,7 +18,7 @@ const ChatContent = forwardRef<HTMLInputElement, ForwardProps>(({ collectionMsgl
       scrollIntoView(ChatContentDom)
       if (collectionMsglist[collectionMsglist.length - 1].type === 'me') (async () => {
          gpt.responseMsg({
-            content: collectionMsglist[collectionMsglist.length - 1].msgData,
+            content: collectionMsglist,
             onMessageReceived: (delta: {
                [propsName: string]: string
             }) => {
