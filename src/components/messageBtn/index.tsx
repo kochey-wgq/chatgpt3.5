@@ -9,6 +9,7 @@ import Slide, { SlideProps } from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import Fade from '@mui/material/Fade';
 import SendIcon from '@mui/icons-material/Send';
+import {isMobile} from '../../utils'
 interface SnackbarTs{
    open: boolean,
    Transition: React.ComponentType<
@@ -51,11 +52,7 @@ const MessageBtn = forwardRef<ForwardRef, ForwardProps>(({ onFieldVal, onCollMsg
    // getCollectionMsg
    const collectionMsglist = useSelector<InitialState, InitialState['massageCollection']>((state) => state.massageCollection)
 
-   // 判断访问的设备
-   const isMobile = (): string[] | null => {
-      const userAgent = navigator.userAgent;
-      return userAgent.match(/(iPhone|iPod|Android|ios|iPad|AppleWebKit.*Mobile.*)/i);
-   }
+
    // 暴露方法
    useImperativeHandle(ref, () => ({
       sendAsideText(content: string) {
@@ -142,7 +139,7 @@ const MessageBtn = forwardRef<ForwardRef, ForwardProps>(({ onFieldVal, onCollMsg
                })}
             }
             TransitionComponent={Transition}
-            message='消息不能为空'
+            message='内容不能为空'
             key={Transition.name}
             autoHideDuration={1000}
          />

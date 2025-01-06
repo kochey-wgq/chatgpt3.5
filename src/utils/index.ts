@@ -44,3 +44,10 @@ export const scrollIntoView = (ChatContentDom: React.RefObject<HTMLInputElement>
    }
    
 }
+
+
+// 判断设备
+export const isMobile = (): string[] | null => {
+   const userAgent = navigator.userAgent;
+   return userAgent.match(/(iPhone|iPod|Android|ios|iPad|AppleWebKit.*Mobile.*)/i);
+}

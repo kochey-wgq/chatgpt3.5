@@ -5,6 +5,7 @@ import MessageBtn,{ForwardRef} from '../components/messageBtn'
 import ChatContent from '../components/chatContent'
 import type { InitialState } from '../store/state';
 import { useSelector } from 'react-redux' 
+import AppBar from '../components/appBar'
 const Layouts: React.FC = (): JSX.Element => {
    // getCollectionMsg
    const collectionMsglist = useSelector<InitialState, InitialState['massageCollection']>((state) => state.massageCollection)
@@ -59,6 +60,8 @@ const Layouts: React.FC = (): JSX.Element => {
       <>
          <div className={style.layouts}>
             <section className={`${collMsgToggle ? style['flex'] : ''}`}>
+               {/* nav */}
+               <AppBar />
                {/* 聊天区块 */}
                <div ref={chatContentDom} className={style.chatContent} style={{ display: visibilityDom(!collMsgToggle) }}>
                   <ChatContent ChatContentDom={chatContentDom} collectionMsglist={collectionMsglist} />

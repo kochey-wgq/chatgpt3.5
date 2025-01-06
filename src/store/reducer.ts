@@ -16,7 +16,7 @@ const reducer = (state: InitialState = initialState, { type, data }: any) => {
          }
       case 'ADD_GPT_MSG':
          let massageCollection : InitialState['massageCollection'] = []
-         
+         let historyList :InitialState['historyList'] = []
          massageCollection = [
             ...state.massageCollection,
          ]
@@ -28,9 +28,12 @@ const reducer = (state: InitialState = initialState, { type, data }: any) => {
             })
          }
          state.massageCollection[state.massageCollection.length - 1].msgData += data.msgData
+         // 如果历史记录为空则添加当前聊天记录
+         !historyList.length && historyList.push(massageCollection)
          return {
             ...state,
-            massageCollection
+            massageCollection,
+            historyList
          }
       default:
          return state

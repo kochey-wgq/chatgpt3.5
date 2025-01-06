@@ -3,11 +3,15 @@ export interface MassageObj {
    msgData : string
 }
 export interface InitialState {
-   massageCollection : MassageObj[]
+   massageCollection : MassageObj[],
+   historyList : Array<MassageObj[]>,
+   historyIndex : number
 }
 
 
 const initialState : InitialState = {
+   historyIndex : 0, //历史索引
+   historyList : [], //历史记录
    massageCollection : [
       // {
       //    type : 'me',
