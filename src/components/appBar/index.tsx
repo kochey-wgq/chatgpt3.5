@@ -9,23 +9,32 @@ import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import style from './index.module.less'
 import HistoricalRecords,{HistoricalRecordsRef} from '../historicalRecords';
 import type { InitialState } from '../../store/state';
-import { useSelector } from 'react-redux'
-const Bar: React.FC = (): JSX.Element => {
+import { useSelector,useDispatch } from 'react-redux'
+import { updateHistoryIndex } from '../../store/actions';
+interface BarProps {
+   onCollMsgToggle : (collMsgToggle: boolean) => void
+}
+const Bar: React.FC<BarProps> = ({onCollMsgToggle}): JSX.Element => {
    const HistoricalDom =  useRef<HistoricalRecordsRef>(null)
    const [barTitle,setBarTitle] = useState<string>('')
+   // getCollectionMsg
+   const collectionMsglist = useSelector<InitialState, InitialState['massageCollection']>((state) => state.massageCollection)
    const historyIndex = useSelector<InitialState,InitialState['historyIndex']>(state => state.historyIndex)
+   const dispatch = useDispatch()
    const openHistory  = () :void =>{ 
       HistoricalDom?.current?.toggleDrawer(true)()
       
    }
-
-   useEffect(() =>{
-      console.log(HistoricalDom?.current?.historyList,'historyList')
-      HistoricalDom?.current?.historyList.length && setBarTitle(HistoricalDom?.current?.historyList[historyIndex][0].msgData)
-   },[HistoricalDom?.current?.historyList])
+   const addChat  = () :void =>{ 
+      onCollMsgToggle(false)
+      dispatch(updateHistoryIndex())
+   }
+   useEffect(() =>{ 
+      setBarTitle(HistoricalDom?.current?.historyList[historyIndex] ? HistoricalDom?.current?.historyList[historyIndex][0].msgData : '')
+   },[HistoricalDom?.current?.historyList,historyIndex,collectionMsglist])
    return ( 
       <>
-         <Box sx={{ flexGrow: 1 }}>
+         {!!HistoricalDom?.current?.historyList.length && <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" color='transparent' style={style}>
                <Toolbar>
                   <IconButton
@@ -44,14 +53,14 @@ const Bar: React.FC = (): JSX.Element => {
                      size="large"
                      edge="end"
                      color="inherit" 
+                     onClick={addChat}
                   >
                      <NoteAddIcon />
                   </IconButton>
                   
                </Toolbar>
             </AppBar>
-         </Box>
-
+         </Box>}
          {/* 历史记录 */}
          <HistoricalRecords ref={HistoricalDom}/>
       </>

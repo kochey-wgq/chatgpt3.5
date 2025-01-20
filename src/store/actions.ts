@@ -1,4 +1,10 @@
 // 驱动reducer添加消息集合(user)
+export const updateHistoryIndex = (data?: number) =>{
+   return {
+      type : 'UPDATE_HISTORY_INDEX',
+      data
+   }
+}
 export const addUserMsg = (data : any) =>{
    return {
       type : 'ADD_USER_MSG',

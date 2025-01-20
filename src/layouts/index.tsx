@@ -18,8 +18,7 @@ const Layouts: React.FC = (): JSX.Element => {
    const listenFieldVal = (fieldVal: string) => {
       console.log(fieldVal,'fieldVal')
    }
-   const listenCollMsgToggle = (collMsgToggle: boolean) => {
-      // console.log(collMsgToggle, 'collMsgToggle')
+   const listenCollMsgToggle = (collMsgToggle: boolean) => { 
       setCollMsgToggle(collMsgToggle)
    }
    const visibilityDom = (toggle: boolean): string => {
@@ -37,7 +36,7 @@ const Layouts: React.FC = (): JSX.Element => {
    // 辅助信息事件
    const asideText = (e:React.MouseEvent<HTMLElement>) =>{ 
       messageBtnRef.current?.sendAsideText(  (e.target as HTMLElement).innerHTML  )
-   }
+   } 
    const initChatCom = (): JSX.Element => { 
       return (
          <>
@@ -61,7 +60,7 @@ const Layouts: React.FC = (): JSX.Element => {
          <div className={style.layouts}>
             <section className={`${collMsgToggle ? style['flex'] : ''}`}>
                {/* nav */}
-               <AppBar />
+               <AppBar onCollMsgToggle={listenCollMsgToggle}/>
                {/* 聊天区块 */}
                <div ref={chatContentDom} className={style.chatContent} style={{ display: visibilityDom(!collMsgToggle) }}>
                   <ChatContent ChatContentDom={chatContentDom} collectionMsglist={collectionMsglist} />
