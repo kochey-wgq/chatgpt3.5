@@ -7,13 +7,14 @@ const reducer = (state: InitialState = initialState, { type, data }: any) => {
    let massageCollection: InitialState['massageCollection'] = state.massageCollection
    switch (type) {
       case 'UPDATE_HISTORY_INDEX': 
+            console.log(data,historyIndex,massageCollection,'data')
+         // 访问其他会话之前先更新当前会话（当前会话存在时,而不是新开会话）
+         if(massageCollection?.length) historyList[historyIndex] = massageCollection 
          if(data === undefined || data === null){ //如果新增会话
             // 一定是所有会话数 + 1
             historyIndex = (historyList.length + 1) - 1
             massageCollection = []
-         }else{   //否则访问会话
-            // 访问其他会话值钱先更新当前会话
-            historyList[historyIndex] = massageCollection  
+         }else{   //否则访问会话 
             // 后更新 会话 索引
             historyIndex = data 
             massageCollection = historyList[historyIndex]
