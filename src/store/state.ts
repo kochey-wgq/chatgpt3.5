@@ -5,11 +5,13 @@ export interface MassageObj {
 export interface InitialState {
    massageCollection : MassageObj[],
    historyList : Array<MassageObj[]>,
-   historyIndex : number
+   historyIndex : number,
+   openAIKeyState : boolean,
 }
 
 
 const initialState : InitialState = {
+   openAIKeyState : false,
    historyIndex : 0, //历史索引
    historyList : [], //历史记录
    massageCollection : [

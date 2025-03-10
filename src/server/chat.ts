@@ -46,16 +46,9 @@ class ChatGpt {
             // 处理每个数据块
             onMessageReceived(chunk.choices[0].delta)
          }
-      } catch (error) { //如果错误就查询key状态
-         fetch("https://openrouter.ai/api/v1/auth/key", {
-            method: "GET",
-            headers: {
-               Authorization: `Bearer ${import.meta.env.VITE_APP_CAHT_GPT_KEY
-}`,
-            },
-         }).then(async res => {
-            console.log(await res.json())
-         })
+      } catch (error) { 
+         throw new Error("openairouter key 出错或未科学上网");
+         
       }
    }
 }

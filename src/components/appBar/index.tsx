@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import style from './index.module.less'
-import HistoricalRecords,{HistoricalRecordsRef} from '../historicalRecords';
+import HistoricalRecords,{HistoricalRecordsRef} from '../HistoricalRecords';
 import type { InitialState } from '../../store/state';
 import { useSelector,useDispatch } from 'react-redux'
 import { updateHistoryIndex } from '../../store/actions';

@@ -1,11 +1,11 @@
 import React, { useState, useRef,useEffect } from 'react'
 import style from './index.module.less'
 import { playChatResponse } from '../utils';
-import MessageBtn,{ForwardRef} from '../components/messageBtn'
-import ChatContent from '../components/chatContent'
+import MessageBtn,{ForwardRef} from '../components/MessageBtn'
+import ChatContent from '../components/ChatContent'
 import type { InitialState } from '../store/state';
 import { useSelector } from 'react-redux' 
-import AppBar from '../components/appBar'
+import AppBar from '../components/AppBar'
 const Layouts: React.FC = (): JSX.Element => {
    // getCollectionMsg
    const collectionMsglist = useSelector<InitialState, InitialState['massageCollection']>((state) => state.massageCollection)

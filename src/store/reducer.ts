@@ -2,12 +2,12 @@
 import initialState, { InitialState } from './state';
 
 const reducer = (state: InitialState = initialState, { type, data }: any) => {
-   let historyList: InitialState['historyList'] = state.historyList
-   let historyIndex: InitialState['historyIndex'] = state.historyIndex
-   let massageCollection: InitialState['massageCollection'] = state.massageCollection
+   let historyList :InitialState['historyList'] = state.historyList
+   let historyIndex :InitialState['historyIndex'] = state.historyIndex
+   let massageCollection :InitialState['massageCollection'] = state.massageCollection
+   let openAIKeyState :InitialState['openAIKeyState'] = state.openAIKeyState
    switch (type) {
       case 'UPDATE_HISTORY_INDEX': 
-            console.log(data,historyIndex,massageCollection,'data')
          // 访问其他会话之前先更新当前会话（当前会话存在时,而不是新开会话）
          if(massageCollection?.length) historyList[historyIndex] = massageCollection 
          if(data === undefined || data === null){ //如果新增会话
@@ -58,6 +58,12 @@ const reducer = (state: InitialState = initialState, { type, data }: any) => {
          return {
             ...state,
             massageCollection
+         }
+      case 'CHECK_OPENAIROUTER_KEY':
+         openAIKeyState = data 
+         return {
+            ...state,
+            openAIKeyState
          }
       default:
          return state
