@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useImperativeHandle } from 'react';
+import { useState, forwardRef, useImperativeHandle } from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -21,7 +21,7 @@ const HistoricalRecords = forwardRef<HistoricalRecordsRef, {}>((props, ref) => {
    const dispatch = useDispatch()
    const historyList = useSelector<InitialState, InitialState['historyList']>(state => state.historyList)
    const toggleDrawer = (toggle: boolean) => () => {
-      console.log(toggle)
+      console.log(toggle,props)
       setOpen(toggle)
    }
 
