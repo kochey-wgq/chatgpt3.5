@@ -1,4 +1,4 @@
-import React, { useState, useRef,useEffect } from 'react'
+import React, { useState, useRef,useEffect, memo } from 'react'
 import style from './index.module.less'
 import { playChatResponse } from '../utils';
 import MessageBtn,{ForwardRef} from '../components/MessageBtn'
@@ -37,7 +37,7 @@ const Layouts: React.FC = (): JSX.Element => {
    const asideText = (e:React.MouseEvent<HTMLElement>) =>{ 
       messageBtnRef.current?.sendAsideText(  (e.target as HTMLElement).innerHTML  )
    } 
-   const initChatCom = (): JSX.Element => { 
+   const InitChatCom = memo((): JSX.Element => { 
       return (
          <>
             <h1 style={{ display: visibilityDom(collMsgToggle) }}>{tips}</h1>
@@ -54,7 +54,7 @@ const Layouts: React.FC = (): JSX.Element => {
             </aside>
          </>
       )
-   }
+   })
    return (
       <>
          <div className={style.layouts}>
@@ -66,7 +66,7 @@ const Layouts: React.FC = (): JSX.Element => {
                   <ChatContent ChatContentDom={chatContentDom} collectionMsglist={collectionMsglist} />
                </div>
                {/* default | communicate */}
-               {initChatCom()}
+               <InitChatCom />
             </section>
          </div>
       </>

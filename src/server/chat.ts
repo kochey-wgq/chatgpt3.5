@@ -1,10 +1,6 @@
-/**
- * 使用时必须切换
- * 
- */
 
 import OpenAI from "openai"
-import type { InitialState } from '../store/state';
+import type { InitialState } from '../store/state'; 
 interface ResponseMsg {
    content: InitialState['massageCollection'],
    onMessageReceived: (delta: { [propsName: string]: string }) => void
@@ -15,10 +11,10 @@ class ChatGpt {
       this.openAi = this.initGPT() 
    }
    initGPT() {
+      const apiKey =  sessionStorage.getItem('openaiApiKey') || import.meta.env.VITE_APP_CAHT_GPT_KEY //使用默认apikey
       const openai = new OpenAI({
          baseURL: "https://openrouter.ai/api/v1",
-         apiKey: import.meta.env.VITE_APP_CAHT_GPT_KEY
-,
+         apiKey,
          dangerouslyAllowBrowser: true,
          defaultHeaders: {
             //   "HTTP-Referer": $YOUR_SITE_URL, // Optional, for including your app on openrouter.ai rankings.

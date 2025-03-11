@@ -27,10 +27,14 @@ const KeyPanel: React.FC = (): JSX.Element => {
       })
       let {data,error} = await res.json()
       let check = error && error.code === 401
-      console.log(data,error,'openairouter key') 
+      data && sessionStorage.setItem('openaiApiKey',keyRef?.current?.value as string)
+      // 入口toggle
       dispatch(checkOpenAiRouterKey(!check))
+
+      // 错误的key将爆红 filed
       setRrror(check)
       setRrrorText(check ? '错误的key' : '')
+      console.log(data,error,'openairouter key') 
    }
    return <>
       <section style={wrapStyle}>
